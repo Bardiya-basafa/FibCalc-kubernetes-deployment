@@ -1,0 +1,17 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - docker build -t bardiya/react-test -f ./client/Dockerfile.dev
+
+script:
+  - docker run bardiya/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t bardiya/multi-client ./client
+  - docker build -t bardiya/multi-nginx ./nginx
+  - docker build -t bardiya/multi-server ./server
+  - docker build -t bardiya/multi-worker ./worker 
+  # docker login from cli in travis ci
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push bardiya/multi-client bardiya/multi-nginx bardiya/multi-server bardiya/multi-worker
