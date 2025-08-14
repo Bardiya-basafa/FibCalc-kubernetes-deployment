@@ -12,6 +12,10 @@ spec:
       labels:
         component: postgres
     spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
       containers:
         - name: postgres
           image: postgres
@@ -25,3 +29,7 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "250m"
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /run/media/bardiya/"drive E/devops"/kubernetes/minikube/FiboCalc/postgres-storage
+              subPath: postgres
