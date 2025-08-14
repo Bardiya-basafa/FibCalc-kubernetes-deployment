@@ -3,9 +3,9 @@ kind: Deployment
 metadata:
   name: client-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
-    matchLabels:
+    martchLables:
       component: web
   template:
     metadata:
@@ -14,7 +14,14 @@ spec:
     spec:
       containers:
         - name: client
-          image: stephengrider/multi-client
+          image:  stephengrider/multi-client
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 3000
+          - containerPort: 3000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
